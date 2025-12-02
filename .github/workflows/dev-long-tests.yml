@@ -16,42 +16,72 @@ jobs:
       DEVNULLRIGHTS: 1
       READFROMBLOCKDEVICE: 1
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: make test
       run: make test
 
   make-test-osx:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: OS-X test
       run: make test # make -c lib all doesn't work because of the fact that it's not a tty
 
   no-intrinsics-fuzztest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: no intrinsics fuzztest
       run: MOREFLAGS="-DZSTD_NO_INTRINSICS" make -C tests fuzztest
 
   tsan-zstreamtest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: thread sanitizer zstreamtest
       run: CC=clang ZSTREAM_TESTTIME=-T3mn make tsan-test-zstream
 
   tsan-fuzztest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: thread sanitizer fuzztest
       run: CC=clang make tsan-fuzztest
 
   gcc-8-asan-ubsan-testzstd:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: gcc-8 + ASan + UBSan + Test Zstd
       run: |
         sudo apt-get -qqq update
@@ -61,7 +91,12 @@ jobs:
   gcc-asan-ubsan-testzstd-32bit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: ASan + UBSan + Test Zstd, 32bit mode
       run: |
         make libc6install
@@ -74,7 +109,12 @@ jobs:
   gcc-8-asan-ubsan-fuzz:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: gcc-8 + ASan + UBSan + Fuzz Test
       run: |
         make gcc8install
@@ -83,7 +123,12 @@ jobs:
   gcc-asan-ubsan-fuzz32:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: ASan + UBSan + Fuzz Test 32bit
       run: |
         make libc6install
@@ -92,21 +137,36 @@ jobs:
   asan-ubsan-regression:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: ASan + UBSan + Regression Test
       run: make -j uasanregressiontest
 
   msan-regression:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: MSan + Regression Test
       run: make -j msanregressiontest
 
   clang-msan-fuzz:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: clang + MSan + Fuzz Test
       run: |
         sudo apt-get -qqq update
@@ -116,7 +176,12 @@ jobs:
   clang-msan-testzstd:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: clang + MSan + Test Zstd
       run: |
         sudo apt-get update
@@ -126,7 +191,12 @@ jobs:
   armfuzz:
       runs-on: ubuntu-latest
       steps:
-      - uses: actions/checkout@v2
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
       - name: Qemu ARM emulation + Fuzz Test
         run: |
           sudo apt-get -qqq update
@@ -136,7 +206,12 @@ jobs:
   valgrind-fuzz-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
     - name: valgrind + fuzz test stack mode    # ~ 7mn
       shell: 'script -q -e -c "bash {0}"'
       run: |
@@ -152,22 +227,27 @@ jobs:
       matrix:
         sanitizer: [address, undefined, memory]
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+      with:
+        egress-policy: audit
+
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
-      uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+      uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@c06b5d3e4837fdad70272003c3397c8e2a6418bc # master
       with:
         oss-fuzz-project-name: 'zstd'
         dry-run: false
         sanitizer: ${{ matrix.sanitizer }}
     - name: Run Fuzzers (${{ matrix.sanitizer }})
-      uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+      uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@c06b5d3e4837fdad70272003c3397c8e2a6418bc # master
       with:
         oss-fuzz-project-name: 'zstd'
         fuzz-seconds: 600
         dry-run: false
         sanitizer: ${{ matrix.sanitizer }}
     - name: Upload Crash
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@3446296876d12d4e3a0f3145a3c87e67bf0a16b5 # v1.0.0
       if: failure() && steps.build.outcome == 'success'
       with:
         name: ${{ matrix.sanitizer }}-artifacts
