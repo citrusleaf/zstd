@@ -1,4 +1,4 @@
-FROM circleci/buildpack-deps:bionic
+FROM circleci/buildpack-deps:bionic@sha256:5ecd6d9cb3e0a74a2563a48baee224b6d79341638dc843d9072b4f08cf23be43
 
 RUN sudo dpkg --add-architecture i386
 RUN sudo apt-get -y -qq update
